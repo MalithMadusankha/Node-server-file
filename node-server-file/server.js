@@ -14,11 +14,12 @@ app
   });
 
 app.get("/doc", function (req, res) {
-  const file = `${__dirname}/test.txt`;
+  const file = `${__dirname}/nucleo_f767zi_https_client_iap_dual_bank_green_image_scenario_1.img`;
   res.download(file); // Set disposition and send it.
 });
 
 app.listen(port, () => {
   //server starts listening for any attempts from a client to connect at port: {port}
-  console.log(`<< Now Listening On Port ${port} >>`);
+  console.log(`<< Now Listening On Port ${port}  >>`);
+  console.log(`  << http://localhost:${port}/ >>`);
 });
