@@ -1,9 +1,9 @@
 const express = require("express"); //Import the express dependency
 const app = express(); //Instantiate an express app, the main work horse of this server
-const port = 5000; //Save the port number where your server will be listening
+const port = 3001; //Save the port number where your server will be listening
 var path = require("path");
-var mime = require("mime");
 var fs = require("fs");
+var zlib = require("zlib");
 //Idiomatic expression in express to route and respond to a client request
 app
   .get("/", (req, res) => {
@@ -18,13 +18,17 @@ app
 app.get("/doc", function (req, res) {
   const file = `${__dirname}/nucleo_f767zi_https_client_iap_dual_bank_green_image_scenario_1.img`;
   let filename = path.basename(file);
-  var mimetype = mime.lookup(file);
+
+  var gzip = zlib.createGzip();
   // console.log(mimetype);
   res.setHeader("Content-disposition", "attachment; filename=" + filename);
-  // res.setHeader("Content-type", mimetype);
   // res.setHeader("Content-Encoding", "x-gzip");
+  res.setHeader("Content-Encoding", "gzip");
+  // res.setHeader("Content-Encoding", "gzip");
+
   var filestream = fs.createReadStream(file);
-  filestream.pipe(res);
+
+  filestream.pipe(gzip).pipe(res);
 });
 
 app.listen(port, () => {
